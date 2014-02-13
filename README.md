@@ -3,12 +3,12 @@ PowerGate
 
 PowerGate is a simple web application built for managing [PowerDNS](https://www.powerdns.com/) records, PowerGate is built using PHP on top of the [Laravel framework](http://www.laravel.com) and is designed to provide a RESTful API.
 
-PowerGate is developed by Bobby Allen and released under the [GPLv3 license](LICENSE).
+PowerGate is developed by Bobby Allen and released under the [GPLv3 license](LICENSE.md).
 
 Installation
 ------------
 
-The installation assumes that you have installed and configured PowerDNS using MySQL as the backend, if you have not yet done this please see a quick start guide in [Installing PowerDNS on Ubuntu Server](INSTALL).
+The installation assumes that you have installed and configured PowerDNS using MySQL as the backend, if you have not yet done this please see a quick start guide in [Installing PowerDNS on Ubuntu Server](INSTALL.md).
 
 To install the application download (or and in this example 'clone') the repository to your server, here is an example of how to install on a Ubuntu 12.04 LTS server:-
 
