@@ -16,7 +16,7 @@ class RecordsController extends \BaseController
         $records = Record::all();
         return Response::json(array(
                     'errors' => false,
-                    'records' => $records,
+                    'records' => $records->toArray(),
                         ), 200);
     }
 
@@ -39,10 +39,10 @@ class RecordsController extends \BaseController
     public function show($id)
     {
         try {
-            $recordn = Record::findOrFail($id);
+            $record = Record::findOrFail($id);
             return Response::json(array(
                         'errors' => false,
-                        'record' => $record,
+                        'record' => $record->toArray(),
                             ), 200);
         } catch (ModelNotFoundException $ex) {
             return Response::json(array(

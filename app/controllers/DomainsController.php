@@ -17,7 +17,7 @@ class DomainsController extends BaseController
         //dd($domains);
         return Response::json(array(
                     'errors' => false,
-                    'domains' => $domains,
+                    'domains' => $domains->toArray(),
                         ), 200);
     }
 
@@ -43,7 +43,7 @@ class DomainsController extends BaseController
             $domain = Domain::findOrFail($id);
             return Response::json(array(
                         'errors' => false,
-                        'domain' => $domain,
+                        'domain' => $domain->toArray(),
                             ), 200);
         } catch (ModelNotFoundException $ex) {
             return Response::json(array(

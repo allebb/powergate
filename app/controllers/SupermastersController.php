@@ -16,7 +16,7 @@ class SupermastersController extends \BaseController
         $supermasters = Supermaster::all();
         return Response::json(array(
                     'errors' => false,
-                    'supermasters' => $supermasters,
+                    'supermasters' => $supermasters->toArray(),
                         ), 200);
     }
 
@@ -42,7 +42,7 @@ class SupermastersController extends \BaseController
             $supermaster = Supermaster::findOrFail($id);
             return Response::json(array(
                         'errors' => false,
-                        'supermaster' => $supermaster,
+                        'supermaster' => $supermaster->toArray(),
                             ), 200);
         } catch (ModelNotFoundException $ex) {
             return Response::json(array(
