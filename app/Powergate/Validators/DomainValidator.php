@@ -7,12 +7,6 @@ use Powergate\Validators\Validator;
 class DomainValidator extends Validator
 {
 
-    protected $types = [
-        'MASTER',
-        'SLAVE',
-        'NATIVE',
-    ];
-
     public function __construct(array $input, $isNew = true)
     {
         parent::__construct($input, $isNew);
@@ -36,7 +30,6 @@ class DomainValidator extends Validator
     protected $updateRules = array(
         'name' => 'required',
         'master' => 'required',
-        'last_changed' => 'required|numeric',
         'type' => 'domain_server_type|required',
         'account' => 'required',
     );

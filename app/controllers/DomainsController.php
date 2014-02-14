@@ -16,7 +16,6 @@ class DomainsController extends BaseController
     public function index()
     {
         $domains = Domain::all();
-        //dd($domains);
         return Response::json(array(
                     'errors' => false,
                     'domains' => $domains->toArray(),
@@ -33,19 +32,24 @@ class DomainsController extends BaseController
         try {
             $validator = new DomainValidator(Input::all());
             $validator->checkValidation();
-            $domain = Domain::create(Input::all());
-            if ($domain) {
-                return Response::json(array(
-                            'errors' => false,
-                            'domain' => $domain->toArray(),
-                                ), 201);
-            }
+            $domain = new Domain;
+            $domain->saveNew();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
         }
+
+        return Response::json(array(
+                    'errors' => false,
+                    'domain' => $domain->toArray(),
+                        ), 201);
     }
 
     /**
@@ -58,16 +62,16 @@ class DomainsController extends BaseController
     {
         try {
             $domain = Domain::findOrFail($id);
-            return Response::json(array(
-                        'errors' => false,
-                        'domain' => $domain->toArray(),
-                            ), 200);
         } catch (ModelNotFoundException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => "Not found",
                             ), 404);
         }
+        return Response::json(array(
+                    'errors' => false,
+                    'domain' => $domain->toArray(),
+                        ), 200);
     }
 
     /**
@@ -81,19 +85,23 @@ class DomainsController extends BaseController
         try {
             $validator = new DomainValidator(Input::all(), false);
             $validator->checkValidation();
-            $domain = Domain::update(Input::all());
-            if ($domain) {
-                return Response::json(array(
-                            'errors' => false,
-                            'domain' => $domain->toArray(),
-                                ), 200);
-            }
+            $domain = Domain::findOrFail($id);
+            $domain->saveUpdate();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
+        } catch (ModelNotFoundException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Not found',
+                            ), 404);
         }
+        return Response::json(array(
+                    'errors' => false,
+                    'domain' => $domain->toArray(),
+                        ), 200);
     }
 
     /**
@@ -104,7 +112,25 @@ class DomainsController extends BaseController
      */
     public function destroy($id)
     {
-        //
+
+        try {
+            $domain = Domain::findOrFail($id);
+            $domain->delete();
+        } catch (ModelNotFoundException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Not found',
+                            ), 404);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
+        }
+        return Response::json(array(
+                    'errors' => false,
+                    'message' => 'Deleted successfully'
+                        ), 200);
     }
 
 }

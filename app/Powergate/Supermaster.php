@@ -2,6 +2,13 @@
 
 namespace Powergate;
 
+/**
+ * An Eloquent Model: 'Powergate\Supermaster'
+ *
+ * @property string $ip
+ * @property string $nameserver
+ * @property string $account
+ */
 class Supermaster extends \Eloquent
 {
 

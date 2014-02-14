@@ -29,6 +29,7 @@
         "post-update-cmd": [
             "php artisan clear-compiled",
             "php artisan ide-helper:generate",
+            "php artisan ide-helper:models -n \"Powergate\\Domain\",\"Powergate\\Record\",\"Powergate\\Supermaster\"",
             "php artisan optimize"
         ],
         "post-create-project-cmd": [
