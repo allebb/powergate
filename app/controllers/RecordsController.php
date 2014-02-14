@@ -27,7 +27,19 @@ class RecordsController extends \BaseController
      */
     public function store()
     {
-        //
+        try {
+            //throw new ValidationException('Dang it Man!');
+        } catch (ValidationException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Data validation failed',
+                            ), 400);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
+        }
     }
 
     /**
@@ -60,7 +72,19 @@ class RecordsController extends \BaseController
      */
     public function update($id)
     {
-        //
+        try {
+            //throw new ValidationException('Dang it Man!');
+        } catch (ValidationException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Data validation failed',
+                            ), 400);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
+        }
     }
 
     /**
