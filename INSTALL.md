@@ -8,7 +8,7 @@ If you haven't already create a new database on your server named ```powerdns```
 * PowerDNS Database Creation Script for MySQL             *
 **********************************************************/
 
-USE `bindhub_dns`;
+USE `powerdns`;
 
 CREATE TABLE domains (
 id INT auto_increment,
