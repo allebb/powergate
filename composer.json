@@ -16,7 +16,7 @@
             "app/tests/TestCase.php"
         ],
         "psr-4": {
-            "Bindhub\\": "app/Bindhub/"
+            "Powergate\\": "app/Powergate/"
         }
     },
     "scripts": {
