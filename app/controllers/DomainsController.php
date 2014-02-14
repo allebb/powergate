@@ -1,6 +1,7 @@
 <?php
 
 use Powergate\Domain;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DomainsController extends BaseController
 {
@@ -44,7 +45,7 @@ class DomainsController extends BaseController
                         'errors' => false,
                         'domain' => $domain,
                             ), 200);
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $ex) {
+        } catch (ModelNotFoundException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'domain' => "Not found",
