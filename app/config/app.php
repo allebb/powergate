@@ -97,6 +97,7 @@ return array(
 
         // Application specific Service Providers
         'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Way\Generators\GeneratorsServiceProvider',
     ),
     /*
       |--------------------------------------------------------------------------
