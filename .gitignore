@@ -8,3 +8,4 @@ composer.lock
 .DS_Store
 Thumbs.db
 composer-proxy.bat
+_ide_helper.php
