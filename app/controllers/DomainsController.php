@@ -48,7 +48,7 @@ class DomainsController extends BaseController
         } catch (ModelNotFoundException $ex) {
             return Response::json(array(
                         'errors' => true,
-                        'domain' => "Not found",
+                        'message' => "Not found",
                             ), 404);
         }
     }
