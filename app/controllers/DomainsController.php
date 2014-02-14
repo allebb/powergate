@@ -2,6 +2,8 @@
 
 use Powergate\Domain;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Powergate\Validators\ValidationException;
+use Powergate\Validators\DomainValidator;
 
 class DomainsController extends BaseController
 {
@@ -29,17 +31,20 @@ class DomainsController extends BaseController
     public function store()
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $validator = new DomainValidator(Input::all());
+            $validator->checkValidation();
+            $domain = Domain::create(Input::all());
+            if ($domain) {
+                return Response::json(array(
+                            'errors' => false,
+                            'domain' => $domain->toArray(),
+                                ), 201);
+            }
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
-        } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
         }
     }
 
@@ -74,17 +79,20 @@ class DomainsController extends BaseController
     public function update($id)
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $validator = new DomainValidator(Input::all(), false);
+            $validator->checkValidation();
+            $domain = Domain::update(Input::all());
+            if ($domain) {
+                return Response::json(array(
+                            'errors' => false,
+                            'domain' => $domain->toArray(),
+                                ), 200);
+            }
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
-        } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
         }
     }
 
