@@ -78,3 +78,9 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+/**
+ * Custom Route Filter for custom API authentication.
+ */
+Route::filter('PowergateAPIAuth', 'Powergate\Filters\PowergateAPIAuth');
