@@ -5,8 +5,7 @@ If you haven't already create a new database on your server named ```powerdns```
 
 ```sql
 /**********************************************************
-* PowerDNS Database Creation Script                       *
-* Created by Bobby Allen, 14/11/2013                      *
+* PowerDNS Database Creation Script for MySQL             *
 **********************************************************/
 
 USE `bindhub_dns`;
