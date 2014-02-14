@@ -2,7 +2,7 @@
 
 namespace Powergate;
 
-class Domain extends Eloquent
+class Domain extends \Eloquent
 {
 
     protected $hidden = [];

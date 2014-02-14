@@ -17,7 +17,7 @@ class PowergateAPIAuth
     private function checkAuthCredentials()
     {
         if (Request::getUser() == Config::get('powergate.auth.user') and Request::getPassword() == Config::get('powergate.auth.key')) {
-            return true;
+            // Its all good in the hood!
         } else {
             return $this->respondUnathorisedRequest();
         }

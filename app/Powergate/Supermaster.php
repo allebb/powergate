@@ -2,11 +2,11 @@
 
 namespace Powergate;
 
-class Supermaster extends Eloquent
+class Supermaster extends \Eloquent
 {
 
     protected $hidden = [];
-    
+
     protected $fillable = [];
 
 }
