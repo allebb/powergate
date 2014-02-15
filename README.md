@@ -179,6 +179,18 @@ TBC
 
 The API intends to provide a simple set of standardised error responses, each of the API methods provide the following standardised error responses in certain situations:
 
+#### Unauthorised
+
+To access the API, you must provide HTTP authentication headers, the username field must match the `user` value and the password field must match the `key` value in the `app/config/Powergate.php` configuration file, if these do not match and/or the authorisation headers are not sent to the API server by your client then you will recieve a **401** response like so:
+
+```json
+{
+    "error": true,
+    "message": "Unauthorised request"
+}
+```
+
+
 #### Not found
 
 When a requested resource can not be found, such as when requesting a specific resource or attempting to update a resource of which does not appear to have a corresponding ID in the database, the following **404** response is generated:
