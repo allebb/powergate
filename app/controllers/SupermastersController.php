@@ -1,6 +1,7 @@
 <?php
 
 use Powergate\Supermaster;
+use Powergate\Validators\SupermasterValidator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Powergate\Validators\ValidationException;
 
@@ -29,7 +30,15 @@ class SupermastersController extends \BaseController
     public function store()
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $supermaster = new Supermaster;
+            $supermaster->ip = Input::get('ip');
+            $supermaster->nameserver = strtolower(Input::get('nameserver'));
+            $supermaster->account = strtolower(Input::get('account'));
+
+            $validator = new SupermasterValidator($supermaster->toArray());
+            $validator->checkValidation();
+
+            $supermaster->save();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
@@ -41,6 +50,10 @@ class SupermastersController extends \BaseController
                         'message' => 'Server error',
                             ), 500);
         }
+        return Response::json(array(
+                    'errors' => false,
+                    'supermaster' => $supermaster->toArray(),
+                        ), 201);
     }
 
     /**
@@ -74,18 +87,31 @@ class SupermastersController extends \BaseController
     public function update($id)
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $supermaster = new Supermaster;
+            $supermaster->ip = Input::get('ip');
+            $supermaster->nameserver = strtolower(Input::get('nameserver'));
+            $supermaster->account = strtolower(Input::get('account'));
+
+            $validator = new SupermasterValidator($supermaster->toArray(), false);
+            $validator->checkValidation();
+
+            $supermaster->save();
         } catch (ValidationException $ex) {
+            dd($ex);
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
-        } catch (Exception $ex) {
+        } catch (ModelNotFoundException $ex) {
             return Response::json(array(
                         'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+                        'message' => 'Not found',
+                            ), 404);
         }
+        return Response::json(array(
+                    'errors' => false,
+                    'record' => $supermaster->toArray(),
+                        ), 200);
     }
 
     /**
@@ -96,7 +122,24 @@ class SupermastersController extends \BaseController
      */
     public function destroy($id)
     {
-        
+        try {
+            $supermaster = Supermaster::findOrFail($id);
+            $supermaster->delete();
+        } catch (ModelNotFoundException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Not found',
+                            ), 404);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
+        }
+        return Response::json(array(
+                    'errors' => false,
+                    'message' => 'Deleted successfully'
+                        ), 200);
     }
 
 }
