@@ -28,7 +28,10 @@ class RecordsController extends \BaseController
     public function store()
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $validator = new RecordValidator(Input::all());
+            $validator->checkValidation();
+            $record = new Record;
+            $record->saveNew();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
@@ -40,6 +43,11 @@ class RecordsController extends \BaseController
                         'message' => 'Server error',
                             ), 500);
         }
+
+        return Response::json(array(
+                    'errors' => false,
+                    'record' => $record->toArray(),
+                        ), 201);
     }
 
     /**
@@ -73,18 +81,25 @@ class RecordsController extends \BaseController
     public function update($id)
     {
         try {
-            //throw new ValidationException('Dang it Man!');
+            $validator = new RecordValidator(Input::all(), false);
+            $validator->checkValidation();
+            $record = Record::findOrFail($id);
+            $record->saveUpdate();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
                         'message' => 'Data validation failed',
                             ), 400);
-        } catch (Exception $ex) {
+        } catch (ModelNotFoundException $ex) {
             return Response::json(array(
                         'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+                        'message' => 'Not found',
+                            ), 404);
         }
+        return Response::json(array(
+                    'errors' => false,
+                    'record' => $domain->toArray(),
+                        ), 200);
     }
 
     /**
@@ -95,7 +110,24 @@ class RecordsController extends \BaseController
      */
     public function destroy($id)
     {
-        //
+        try {
+            $record = Record::findOrFail($id);
+            $record->delete();
+        } catch (ModelNotFoundException $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Not found',
+                            ), 404);
+        } catch (Exception $ex) {
+            return Response::json(array(
+                        'errors' => true,
+                        'message' => 'Server error',
+                            ), 500);
+        }
+        return Response::json(array(
+                    'errors' => false,
+                    'message' => 'Deleted successfully'
+                        ), 200);
     }
 
 }
