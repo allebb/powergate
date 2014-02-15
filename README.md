@@ -118,9 +118,9 @@ Upon successful creation, the API will respond back with a **201** HTTP response
     "errors": false,
     "domain": {
         "name": "mydomain.com",
-        "master": "",
+        "master": null,
         "type": "MASTER",
-        "account": "",
+        "account": null,
         "id": 2
 	}
 }
@@ -128,11 +128,11 @@ Upon successful creation, the API will respond back with a **201** HTTP response
 
 #### Updating an existing domain
 
-Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new 'mydomain.com' domain and change it from a 'MASTER' type to 'SLAVE' we could do it like so:
+Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*mydomain.com*' domain and change it from a 'MASTER' type to 'SLAVE' we could do it like so:
 
 ```
 PATCH https://api.yourdnsserver.com/domains/2 
-PARAMS name=mydomain.com&type=MASTER
+PARAMS name=mydomain.com&type=SLAVE
 ```
 
 Upon successful update of the resource, the a **200** response should be recieved detailing the new resource as shown here:
@@ -141,13 +141,13 @@ Upon successful update of the resource, the a **200** response should be recieve
 {
     "errors": false,
     "domain": {
-        "id": 4,
+        "id": 2,
         "name": "mydomain.com",
         "master": null,
         "last_check": null,
         "type": "SLAVE",
         "notified_serial": null,
-        "account": ""
+        "account": null
     }
 }
 ```
