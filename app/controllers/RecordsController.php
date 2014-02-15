@@ -1,6 +1,7 @@
 <?php
 
 use Powergate\Record;
+use Powergate\Validators\RecordValidator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RecordsController extends \BaseController
@@ -28,10 +29,20 @@ class RecordsController extends \BaseController
     public function store()
     {
         try {
-            $validator = new RecordValidator(Input::all());
-            $validator->checkValidation();
+
             $record = new Record;
-            $record->saveNew();
+            $record->domain_id = Input::get('domain_id');
+            $record->name = Input::get('name');
+            $record->type = strtoupper(Input::get('type'));
+            $record->content = strtolower(Input::get('content'));
+            $record->ttl = Input::get('ttl');
+            $record->prio = Input::get('prio');
+            $record->change_date = time();
+
+            $validator = new RecordValidator($record->toArray());
+            $validator->checkValidation();
+
+            $record->save();
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
@@ -81,10 +92,21 @@ class RecordsController extends \BaseController
     public function update($id)
     {
         try {
-            $validator = new RecordValidator(Input::all(), false);
+            
+            $record = new Record;
+            $record->domain_id = Input::get('domain_id');
+            $record->name = Input::get('name');
+            $record->type = strtoupper(Input::get('type'));
+            $record->content = strtolower(Input::get('content'));
+            $record->ttl = Input::get('ttl');
+            $record->prio = Input::get('prio');
+            $record->change_date = time();
+
+            $validator = new RecordValidator($record->toArray(), false);
             $validator->checkValidation();
-            $record = Record::findOrFail($id);
-            $record->saveUpdate();
+
+            $record->save();
+            
         } catch (ValidationException $ex) {
             return Response::json(array(
                         'errors' => true,
@@ -98,7 +120,7 @@ class RecordsController extends \BaseController
         }
         return Response::json(array(
                     'errors' => false,
-                    'record' => $domain->toArray(),
+                    'record' => $record->toArray(),
                         ), 200);
     }
 

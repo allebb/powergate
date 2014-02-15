@@ -34,11 +34,11 @@ class RecordValidator extends Validator
      * @var array
      */
     protected $createRules = array(
-        'name' => 'required|unique:records', // Domain must be unique!
+        'domain_id' => 'required|numeric',
+        'name' => 'required',
         'type' => 'record_type|required',
         'content' => 'required',
         'ttl' => 'required|numeric',
-        'prio' => 'required|numeric',
         'change_date' => 'numeric',
     );
 
@@ -47,11 +47,11 @@ class RecordValidator extends Validator
      * @var array
      */
     protected $updateRules = array(
+        'domain_id' => 'required|numeric',
         'name' => 'required',
         'type' => 'record_type|required',
         'content' => 'required',
         'ttl' => 'required|numeric',
-        'prio' => 'required|numeric',
         'change_date' => 'numeric',
     );
 

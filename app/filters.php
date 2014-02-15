@@ -86,3 +86,7 @@ Route::filter('PowergateAPIAuth', 'Powergate\Filters\PowergateAPIAuth');
 Validator::resolver(function($translator, $data, $rules, $messages) {
     return new Powergate\Validators\CustomRules\DomainServerTypeRule($translator, $data, $rules, $messages);
 });
+
+Validator::resolver(function($translator, $data, $rules, $messages) {
+    return new Powergate\Validators\CustomRules\RecordTypeRule($translator, $data, $rules, $messages);
+});
