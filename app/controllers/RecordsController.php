@@ -15,10 +15,7 @@ class RecordsController extends \BaseController
     public function index()
     {
         $records = Record::all();
-        return Response::json(array(
-                    'errors' => false,
-                    'records' => $records->toArray(),
-                        ), 200);
+        return $this->apiResponse(200, 'records', $records->toArray());
     }
 
     /**
@@ -28,6 +25,7 @@ class RecordsController extends \BaseController
      */
     public function store()
     {
+
         try {
 
             $record = new Record;
@@ -44,21 +42,12 @@ class RecordsController extends \BaseController
 
             $record->save();
         } catch (ValidationException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
 
-        return Response::json(array(
-                    'errors' => false,
-                    'record' => $record->toArray(),
-                        ), 201);
+        return $this->apiResponse(201, 'record', $record->toArray());
     }
 
     /**
@@ -69,18 +58,15 @@ class RecordsController extends \BaseController
      */
     public function show($id)
     {
+
         try {
+
             $record = Record::findOrFail($id);
-            return Response::json(array(
-                        'errors' => false,
-                        'record' => $record->toArray(),
-                            ), 200);
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => "Not found",
-                            ), 404);
+            return $this->apiResponse(404);
         }
+
+        return $this->apiResponse(200, 'record', $record->toArray());
     }
 
     /**
@@ -92,7 +78,7 @@ class RecordsController extends \BaseController
     public function update($id)
     {
         try {
-            
+
             $record = new Record;
             $record->domain_id = Input::get('domain_id');
             $record->name = Input::get('name');
@@ -106,22 +92,13 @@ class RecordsController extends \BaseController
             $validator->checkValidation();
 
             $record->save();
-            
         } catch (ValidationException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'record' => $record->toArray(),
-                        ), 200);
+
+        return $this->apiResponse(200, 'record', $record->toArray());
     }
 
     /**
@@ -132,24 +109,19 @@ class RecordsController extends \BaseController
      */
     public function destroy($id)
     {
+
         try {
+
             $record = Record::findOrFail($id);
             $record->delete();
+            
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'message' => 'Deleted successfully'
-                        ), 200);
+
+        return $this->apiResponse(200, 'message', 'Deleted successfully');
     }
 
 }

@@ -16,10 +16,7 @@ class DomainsController extends BaseController
     public function index()
     {
         $domains = Domain::all();
-        return Response::json(array(
-                    'errors' => false,
-                    'domains' => $domains->toArray(),
-                        ), 200);
+        return $this->apiResponse(200, 'domains', $domains->toArray());
     }
 
     /**
@@ -29,27 +26,21 @@ class DomainsController extends BaseController
      */
     public function store()
     {
+
         try {
+            
             $validator = new DomainValidator(Input::all());
             $validator->checkValidation();
             $domain = new Domain;
             $domain->saveNew();
+            
         } catch (ValidationException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
 
-        return Response::json(array(
-                    'errors' => false,
-                    'domain' => $domain->toArray(),
-                        ), 201);
+        return $this->apiResponse(201, 'domain', $domain->toArray());
     }
 
     /**
@@ -60,18 +51,16 @@ class DomainsController extends BaseController
      */
     public function show($id)
     {
+
         try {
+            
             $domain = Domain::findOrFail($id);
+            
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => "Not found",
-                            ), 404);
+            return $this->apiResponse(404);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'domain' => $domain->toArray(),
-                        ), 200);
+
+        return $this->apiResponse(200, 'domain', $domain->toArray());
     }
 
     /**
@@ -82,26 +71,21 @@ class DomainsController extends BaseController
      */
     public function update($id)
     {
+
         try {
+            
             $validator = new DomainValidator(Input::all(), false);
             $validator->checkValidation();
             $domain = Domain::findOrFail($id);
             $domain->saveUpdate();
+            
         } catch (ValidationException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'domain' => $domain->toArray(),
-                        ), 200);
+
+        return $this->apiResponse(200, 'domain', $domain->toArray());
     }
 
     /**
@@ -114,23 +98,17 @@ class DomainsController extends BaseController
     {
 
         try {
+            
             $domain = Domain::findOrFail($id);
             $domain->delete();
+            
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'message' => 'Deleted successfully'
-                        ), 200);
+
+        return $this->apiResponse(200, 'message', 'Deleted successfully');
     }
 
 }

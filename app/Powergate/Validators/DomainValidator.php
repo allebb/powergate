@@ -18,9 +18,7 @@ class DomainValidator extends Validator
      */
     protected $createRules = array(
         'name' => 'required|unique:domains', // Domain must be unique!
-        'master' => 'required',
         'type' => 'domain_server_type|required',
-        'account' => 'required',
     );
 
     /**
@@ -29,9 +27,7 @@ class DomainValidator extends Validator
      */
     protected $updateRules = array(
         'name' => 'required',
-        'master' => 'required',
         'type' => 'domain_server_type|required',
-        'account' => 'required',
     );
 
 }

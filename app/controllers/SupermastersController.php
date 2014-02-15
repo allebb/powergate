@@ -16,10 +16,7 @@ class SupermastersController extends \BaseController
     public function index()
     {
         $supermasters = Supermaster::all();
-        return Response::json(array(
-                    'errors' => false,
-                    'supermasters' => $supermasters->toArray(),
-                        ), 200);
+        return $this->apiResponse(200, 'supermasters', $supermasters->toArray());
     }
 
     /**
@@ -29,7 +26,9 @@ class SupermastersController extends \BaseController
      */
     public function store()
     {
+
         try {
+
             $supermaster = new Supermaster;
             $supermaster->ip = Input::get('ip');
             $supermaster->nameserver = strtolower(Input::get('nameserver'));
@@ -40,20 +39,12 @@ class SupermastersController extends \BaseController
 
             $supermaster->save();
         } catch (ValidationException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'supermaster' => $supermaster->toArray(),
-                        ), 201);
+        
+        return $this->apiResponse(201, 'supermaster', $supermaster->toArray());
     }
 
     /**
@@ -64,18 +55,16 @@ class SupermastersController extends \BaseController
      */
     public function show($id)
     {
+
         try {
+
             $supermaster = Supermaster::findOrFail($id);
-            return Response::json(array(
-                        'errors' => false,
-                        'supermaster' => $supermaster->toArray(),
-                            ), 200);
+            
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => "Not found",
-                            ), 404);
+            return $this->apiResponse(404);
         }
+        
+        return $this->apiResponse(200, 'supermaster', $supermaster->toArray());
     }
 
     /**
@@ -86,7 +75,9 @@ class SupermastersController extends \BaseController
      */
     public function update($id)
     {
+
         try {
+
             $supermaster = new Supermaster;
             $supermaster->ip = Input::get('ip');
             $supermaster->nameserver = strtolower(Input::get('nameserver'));
@@ -96,22 +87,14 @@ class SupermastersController extends \BaseController
             $validator->checkValidation();
 
             $supermaster->save();
+            
         } catch (ValidationException $ex) {
-            dd($ex);
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Data validation failed',
-                            ), 400);
+            return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'record' => $supermaster->toArray(),
-                        ), 200);
+
+        return $this->apiResponse(200, 'supermaster', $supermaster->toArray());
     }
 
     /**
@@ -122,24 +105,19 @@ class SupermastersController extends \BaseController
      */
     public function destroy($id)
     {
+        
         try {
+            
             $supermaster = Supermaster::findOrFail($id);
             $supermaster->delete();
+            
         } catch (ModelNotFoundException $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Not found',
-                            ), 404);
+            return $this->apiResponse(404);
         } catch (Exception $ex) {
-            return Response::json(array(
-                        'errors' => true,
-                        'message' => 'Server error',
-                            ), 500);
+            return $this->apiResponse(500);
         }
-        return Response::json(array(
-                    'errors' => false,
-                    'message' => 'Deleted successfully'
-                        ), 200);
+        
+        return $this->apiResponse(200, 'message', 'Deleted successfully');
     }
 
 }
