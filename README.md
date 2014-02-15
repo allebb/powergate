@@ -181,7 +181,7 @@ The API intends to provide a simple set of standardised error responses, each of
 
 #### Not found
 
-When a requested resource can not be found, such as when requesting a specific resource or attempting to update a resource of which does not appear to have a corresponding ID in the database, the following 404 response is generated:
+When a requested resource can not be found, such as when requesting a specific resource or attempting to update a resource of which does not appear to have a corresponding ID in the database, the following **404** response is generated:
 
 ```json
 {
@@ -192,7 +192,7 @@ When a requested resource can not be found, such as when requesting a specific r
 
 #### Validation errors
 
-When a request can not be completed due to invalid data, the API will respond with a 400 status code (Bad request) and the following JSON data will be returned:
+When a request can not be completed due to invalid data, the API will respond with a **400** status code (*Bad request*) and the following JSON data will be returned:
 
 ```json
 {
@@ -203,7 +203,7 @@ When a request can not be completed due to invalid data, the API will respond wi
 
 #### Server error
 
-For all other errors a standard 500 status response will be thrown for situatons where we did not track the issue to a particular event, in this situation the following response will be return:
+For all other errors a standard **500** status response will be thrown for situatons where we did not track the issue to a particular event, in this situation the following response will be return:
 
 ```json
 {
