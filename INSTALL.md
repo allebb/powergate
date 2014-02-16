@@ -205,9 +205,9 @@ Now run the following MySQL queries to create a new domain and a couple of recor
 USE powerdns;
 
 INSERT INTO domains (name, type) VALUES ('example.com', 'MASTER');
-INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.org', 'ns1.example.com hostmaster.example.com 1', 'SOA', 86400, NULL);
-INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.org', 'ns1.example.com', 'NS', 86400, NULL);
-INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.org', 'ns2.example.com', 'NS', 86400, NULL);
+INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.com', 'ns1.example.com hostmaster.example.com 1', 'SOA', 86400, NULL);
+INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.com', 'ns1.example.com', 'NS', 86400, NULL);
+INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'example.com', 'ns2.example.com', 'NS', 86400, NULL);
 INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'ns1.example.com', '10.0.0.1', 'A', 86400, NULL);
 INSERT INTO records (domain_id, name, content, type, ttl, prio) VALUES (1, 'ns2.example.com', '10.0.0.2', 'A', 86400, NULL);
 ```
