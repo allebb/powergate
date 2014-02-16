@@ -149,6 +149,120 @@ The Master DNS server is the server of which is going to have PowerGate installe
 
 * Nginx - A powerful yet lightweight web server.
 * PHP 5.5 - Powergate is written in PHP on top of the Laravel framework, we need PHP in order for the application to run!
+* Composer - A PHP package manager
+
+Let's waste no time, lets jump right in...
+
+```shell
+sudo apt-get install python-software-properties
+
+sudo add-apt-repository ppa:nginx/stable
+sudo apt-get update
+sudo apt-get install nginx-full
+
+sudo add-apt-repository ppa:ondrej/php5
+sudo apt-get update
+sudo apt-get install php5-fpm php5-curl php5-json php5-sqlite php5-mcrypt php5-cli php5-mysql
+
+apt-get install git
+
+cd /var/www
+git clone https://github.com/bobsta63/powergate.git
+chown -R www-data /var/www/powergate
+chmod -R 771 /var/www/powergate/app/storage
+```
+
+You should now have a directory named 'powergate' in /var/www, check by executing `ls`.
+
+Now we need to install [Composer](http://www.getcomposer.org), lets do this like so:
+
+```shell
+curl -sS https://getcomposer.org/installer | php
+```
+We'll move it to our bin directory so we can access it by just calling 'composer'
+
+```shell
+mv composer.phar /usr/bin/composer
+chmod +x /usr/bin/composer
+```
+
+Now check we can execute like so:
+
+```shell
+composer --version
+```
+
+Thats great! Now lets change into our 'powergate' directory and lets install the project depencies using composer like so:
+
+```shell
+cd /var/ww/powergate
+composer install
+```
+
+and now just set an application key for our application like so:
+
+```shell
+php artisan key:generate
+```
+
+Edit **/var/www/powergate/app/config/database.php** and update the database settings (The database username and password) so that the application can connect to your PowerDNS database.
+
+Fantastic lets move on, we now need to make PHP and Nginx work in harmony together...
+
+Create new file in **/etc/nginx/sites-available/powergate.conf** with the following content:
+
+```
+################################################################################
+# Nginx  configuration file for Powergate                                      #
+################################################################################
+
+server {
+
+        listen          80;
+        server_name     _;
+        access_log      /var/log/powergate.access.log combined;
+        error_log       /var/log/powergate.error.log;
+        root            /var/www/powergate/public;
+        index           index.php;
+
+        location / {
+                try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+                fastcgi_split_path_info ^(.+\.php)(/.+)$;
+                fastcgi_pass unix:/var/run/php5-fpm.sock;
+                fastcgi_index index.php;
+                include fastcgi_params;
+        }
+
+        location ~ /\.ht {
+                deny all; 
+        }
+
+
+}
+```
+
+Now edit **/etc/php5/fpm/pool.d/www.conf** and check that this line is uncommented `listen = /var/run/php5-fpm.sock`
+
+Lets now create a Symlink to enable the vhost:
+
+```shell
+ln -s /etc/nginx/sites-available/powergate.conf /etc/nginx/sites-enabled/powergate.conf
+```
+
+Lets now restart both the nginx server and php5-fpm and we should be good to go!
+
+```shell
+service nginx restart && service php5-fpm restart
+```
+
+You may also wish to delete the 'default' nginx configuration file as unless you specify a custom server name it will try and use your default site aswell like so:
+
+```shell
+rm -Rf /etc/nginx/sites-enabled/default
+```
 
 You are now done for the master server!
 
