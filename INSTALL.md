@@ -287,7 +287,7 @@ If you did not recieve a repsonse simular to the above then please move on the t
 
 * Restart DNS services on each of your DNS servers when making configuration changes like so `service pdns restart`.
 * Useful log infomation can be found in `/var/log/syslog` and is recommended that when you experience issues that this is the first place you check on both the MASTER DNS and SLAVE servers.
-* If the slave server is NOT recieving updates, try executing `pdns_control notify-hosts example.com 10.0.0.2` to force a notificatio for the required domain to the slave. (replacing the IP address of the slave that is not getting the update(s))
+* If the slave server is NOT recieving updates, try executing `pdns_control notify-host example.com 10.0.0.2` to force a notificatio for the required domain to the slave. (replacing the IP address of the slave that is not getting the update(s))
 * If you've recently added a new slave DNS server but it is not getting updates ensure that you have added the IP address to the master server's `allow-axfr-ips` configuration line, multiple IP addresses should be seperated with a comma.
 * If you wish to emulate an automatic update, you can increment the SOA of a domain like so to trigger an update `UPDATE records SET content = 'ns1.example.com hostmaster.example.org 3' WHERE type = 'SOA' AND name = 'example.com';` (In this example I've incremented the SOA serial from '2' to '3'). After such an update is executed on the master, you should see an entry in the syslog (on the master server) like so:
 
@@ -328,3 +328,32 @@ My versions of the **/etc/powerdns/pdns.conf** files can be viewed here:
 * [Slave Server](https://gist.github.com/bobsta63/9036453) - The file resided on ns2.example.com (10.0.0.2)
 
 I'm not suggesting that you should use these or possible enable other features such as chroot'd enviroment but I'm providing these configuration here as 'working' examples.
+
+## Adding additonal domains
+
+Adding a new domain to the server and enable replication means we need to do a couple of things, firstly we need to add a record to the supermasters table on each of the slave servers, remember to take into account that for other nameserver you'll need to change the name of the slave server eg 'ns2.bobbyallen.com' should be changed to say 'ns3.bobbyallen.com' and ensure that there is a corresponding NS and A record on your master server.
+
+```sql
+INSERT INTO supermasters (ip, nameserver, account) VALUES ('10.0.0.1', 'ns2.bobbyallen.com',NULL);
+```
+
+On the master server now run the following queries, to create our intial records:
+
+```sql
+USE powerdns;
+INSERT INTO domains (name, type) VALUE ('bobbyallen.com', 'MASTER');
+INSERT INTO records (domain_id, name, type, content, ttl) VALUES (2, 'bobbyallen.com', 'SOA', 'ns1.bobbyallen.com hostmaster.bobbyallen.com 1', 86400);
+INSERT INTO records (domain_id, name, type, content, ttl) VALUES (2, 'bobbyallen.com', 'NS', 'ns1.bobbyallen.com', 86400);
+INSERT INTO records (domain_id, name, type, content, ttl) VALUES (2, 'bobbyallen.com', 'NS', 'ns2.bobbyallen.com', 86400);)
+INSERT INTO records (domain_id, name, type, content, ttl) VALUES (2, 'ns1.bobbyallen.com', 'A', '10.0.0.1', 86400);
+INSERT INTO records (domain_id, name, type, content, ttl) VALUES (2, 'ns2.bobbyallen.com', 'A', '10.0.0.2', 86400);
+
+/** Update the SOA record to trigger an update to all slave servers */
+update records set content = 'ns1.bobbyallen.com hostmaster.bobbyallen.com 2' where content = 'ns1.bobbyallen.com hostmaster.bobbyallen.com 1';
+```
+
+After a few seconds the slave should have recieved the updates.
+
+## Adding additonal slave servers
+
+TBC
