@@ -291,7 +291,7 @@ If you did not recieve a repsonse simular to the above then please move on the t
 * If you've recently added a new slave DNS server but it is not getting updates ensure that you have added the IP address to the master server's `allow-axfr-ips` configuration line, multiple IP addresses should be seperated with a comma.
 * If you wish to emulate an automatic update, you can increment the SOA of a domain like so to trigger an update `UPDATE records SET content = 'ns1.example.com hostmaster.example.org 3' WHERE type = 'SOA' AND name = 'example.com';` (In this example I've incremented the SOA serial from '2' to '3'). After such an update is executed on the master, you should see an entry in the syslog (on the master server) like so:
 
-		```
+
 		Feb 16 15:46:18 ns1 pdns[4661]: 1 domain for which we are master needs notifications
 		Feb 16 15:46:18 ns1 pdns[4661]: Queued notification of domain 'example.com' to 172.25.87.201
 		Feb 16 15:46:18 ns1 pdns[4661]: Queued notification of domain 'example.com' to 172.25.87.202
@@ -305,11 +305,11 @@ If you did not recieve a repsonse simular to the above then please move on the t
 		Feb 16 15:46:19 ns1 pdns[4661]: Removed from notification list: 'example.com' to 172.25.87.201:53
 		Feb 16 15:46:19 ns1 pdns[4661]: Removed from notification list: 'example.com' to 172.25.87.202:53 (was acknowledged)
 		Feb 16 15:46:21 ns1 pdns[4661]: No master domains need notifications
-		```
+
 		
 The data should be replicated on the slave now and if you check the syslog on the slave servers they should also have the follow data:
 
-		```
+
 		Feb 16 15:46:18 ns2 pdns[2120]: 1 slave domain needs checking, 0 queued for AXFR
 		Feb 16 15:46:18 ns2 pdns[2120]: Received serial number updates for 1 zones, had 0 timeouts
 		Feb 16 15:46:18 ns2 pdns[2120]: Domain example.com is stale, master serial 3, our serial 2
@@ -318,7 +318,6 @@ The data should be replicated on the slave now and if you check the syslog on th
 		Feb 16 15:46:18  pdns[2120]: last message repeated 2 times
 		Feb 16 15:46:18 ns2 pdns[2120]: AXFR started for 'example.com', transaction started
 		Feb 16 15:46:18 ns2 pdns[2120]: AXFR done for 'example.com', zone committed
-		```
 
 
 ## Example configuration files
