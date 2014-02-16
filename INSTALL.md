@@ -307,7 +307,7 @@ If you did not recieve a repsonse simular to the above then please move on the t
 		Feb 16 15:46:21 ns1 pdns[4661]: No master domains need notifications
 
 		
-The data should be replicated on the slave now and if you check the syslog on the slave servers they should also have the follow data:
+	The data should be replicated on the slave now and if you check the syslog on the slave servers they should also have the follow data:
 
 
 		Feb 16 15:46:18 ns2 pdns[2120]: 1 slave domain needs checking, 0 queued for AXFR
