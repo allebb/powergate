@@ -69,7 +69,7 @@ An example of the response is as follows:
 
 #### Returning a single domain record
 
-Returning a domain is the same as requesting the full list of domains, except you are required to specify the domain ID in the request URI, so if we wanted to return a single record (*In this case record with an ID of 1*) we'd request it like so:
+Returning a domain is the same as requesting the full list of domains, except you are required to specify the domain ID in the request URI, so if we wanted to return a single record (*In this case a domain with an ID of 1*) we'd request it like so:
 
 ```
 GET https://api.yourdnsserver.com/domains/1
@@ -169,7 +169,171 @@ Upon successful deletion of the domain, the following **200** response will be r
 
 ### Records
 
-TBC
+#### Listing all records
+
+The API enables you to list all of the currently listed records that you have configured on your server by using the following request:
+
+```
+GET https://api.yourdnsserver.com/records
+```
+
+An example of the response is as follows:
+
+```json
+{
+    "errors": false,
+    "records": [
+        {
+            "id": 1,
+            "domain_id": 1,
+            "name": "example.com",
+            "type": "SOA",
+            "content": "localhost ahu@ds9a.nl 1",
+            "ttl": 86400,
+            "prio": null,
+            "change_date": null
+        },
+        {
+            "id": 2,
+            "domain_id": 1,
+            "name": "example.com",
+            "type": "NS",
+            "content": "dns-us1.powerdns.net",
+            "ttl": 86400,
+            "prio": null,
+            "change_date": null
+        },
+        {
+            "id": 3,
+            "domain_id": 1,
+            "name": "example.com",
+            "type": "NS",
+            "content": "dns-eu1.powerdns.net",
+            "ttl": 86400,
+            "prio": null,
+            "change_date": null
+        },
+        ....
+        {
+            "id": 11,
+            "domain_id": 1,
+            "name": "example.com",
+            "type": "NS",
+            "content": "dns-us1.powerdns.net",
+            "ttl": 86400,
+            "prio": null,
+            "change_date": 1392498361
+        }
+    ]
+}
+```
+
+#### Returning a single record
+
+Returning a record is the same as requesting the full list of record, except you are required to specify the record ID in the request URI, so if we wanted to return a single record (*In this case record with an ID of 1*) we'd request it like so:
+
+```
+GET https://api.yourdnsserver.com/records/1
+```
+
+The expected response is as follows:
+
+```json
+{
+    "errors": false,
+    "record": {
+        "id": 1,
+        "domain_id": 1,
+        "name": "example.com",
+        "type": "SOA",
+        "content": "ns1.example.com ballen@bobbyallen.me 20140216",
+        "ttl": 86400,
+        "prio": null,
+        "change_date": null
+    }
+}
+```
+
+#### Creating a new record
+
+To create a new record, we must make a **POST** request specify some paramters, the parameters that we need to specify are as follows:
+
+* **domain_id** - Required, Numeric
+* **name** - Required
+* **type** - Record type, valid entries are (A, AAAA, CNAME, HINFO, MX, NAPTR, NS, PTR, SOA, SPF, SRV, SSHFP, TXT and RP)
+* **content** - Required
+* **ttl** - Required, Numeric
+
+You can additionally set the following parameters too but they are not required by default:
+
+* **prio** - Priory rank of records such as MX records (defaults to null) otherwise.
+
+Here is an example request to create a new domain:
+
+```
+POST https://api.yourdnsserver.com/records 
+PARAMS domain_id=1&name=server2.example.com&type=A&content=126.22.98.2&ttl=3600
+```
+
+Upon successful creation, the API will respond back with a **201** HTTP response as follows:
+
+```json
+{
+    "errors": false,
+    "record": {
+        "domain_id": "1",
+        "name": "server2.example.com",
+        "type": "A",
+        "content": "126.22.98.2",
+        "ttl": "3600",
+        "prio": null,
+        "change_date": 1392545724,
+        "id": 12
+    }
+}```
+
+#### Updating an existing records
+
+Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*server2.example.com*' record and change it using an IP address for the A record from '126.22.98.2' to '126.22.98.99':
+
+```
+PATCH https://api.yourdnsserver.com/domains/2 
+PARAMS domain_id=1&name=server2.example.com&type=A&content=126.22.98.99&ttl=3600
+```
+
+Upon successful update of the resource, the a **200** response should be recieved detailing the new resource as shown here:
+
+```json
+{
+    "errors": false,
+    "record": {
+        "domain_id": "1",
+        "name": "server2.example.com",
+        "type": "A",
+        "content": "126.22.98.99",
+        "ttl": "3600",
+        "prio": null,
+        "change_date": 1392546308,
+        "id": 12
+    }
+}
+```
+
+#### Deleting a record
+
+To delete a record, it's as simple as sending a **DELETE** request specifing the record ID, for example:
+
+```DELETE https://api.yourdnsserver.com/records/12```
+
+Upon successful deletion of the domain, the following **200** response will be returned:
+
+```json
+{
+    "errors": false,
+    "message": "Deleted successfully"
+}
+```
+
 
 ### Supermasters
 
