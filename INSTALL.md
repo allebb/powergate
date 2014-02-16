@@ -226,9 +226,9 @@ You can use this to check if DNS records etc. have properly transfered to each o
 If you got a response like this:
 
 ```shell
-root@some-machine:~# dig @172.25.87.202 example.com
+root@some-machine:~# dig @10.0.0.2 example.com
 
-; <<>> DiG 9.8.1-P1 <<>> @172.25.87.202 example.com
+; <<>> DiG 9.8.1-P1 <<>> @10.0.0.2 example.com
 ; (1 server found)
 ;; global options: +cmd
 ;; Got answer:
@@ -243,7 +243,7 @@ root@some-machine:~# dig @172.25.87.202 example.com
 example.com.		86400	IN	SOA	ns1.example.com. hostmaster.example.com. 2 10800 3600 604800 3600
 
 ;; Query time: 28 msec
-;; SERVER: 172.25.87.202#53(172.25.87.202)
+;; SERVER: 10.0.0.2#53(10.0.0.2)
 ;; WHEN: Sun Feb 16 15:39:54 2014
 ;; MSG SIZE  rcvd: 80
 
@@ -254,8 +254,6 @@ Checking the MySQL database on the slave server should now display both records 
 
 ```shell
 mysql> use powerdns;
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
 
 Database changed
 mysql> select * from domains;
