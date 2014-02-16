@@ -2,6 +2,7 @@
 
 use Powergate\Record;
 use Powergate\Validators\RecordValidator;
+use Powergate\Validators\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class RecordsController extends \BaseController

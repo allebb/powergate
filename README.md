@@ -415,6 +415,18 @@ To access the API, you must provide HTTP authentication headers, the username fi
 }
 ```
 
+#### Invalid API requests (URI's etc)
+
+If an invalid URI is requested or a client attempts to **POST** to a **GET** only endpoint for example, the API will respond with a **404** response with the following message:
+
+```json
+{
+    "error": "true",
+    "message": "Invalid request, see https://github.com/bobsta63/powergate/blob/master/README.md for API endpoint URI's"
+}
+```
+
+This response differs from the Not found message as documented below in the fact that the API does not know how to handle the request as opposed to simply not able to find a resource object.
 
 #### Not found
 

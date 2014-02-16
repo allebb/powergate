@@ -76,11 +76,12 @@ class DomainsController extends BaseController
             $validator->checkValidation();
             $domain = Domain::findOrFail($id);
             $domain->saveUpdate();
-        } catch (ValidationException $ex) {
+            
+        } catch (Powergate\Validators\ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
-        }
+        } 
 
         return $this->apiResponse(200, 'domain', $domain->toArray());
     }
@@ -98,6 +99,7 @@ class DomainsController extends BaseController
 
             $domain = Domain::findOrFail($id);
             $domain->delete();
+            
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         } catch (Exception $ex) {
@@ -107,11 +109,17 @@ class DomainsController extends BaseController
         return $this->apiResponse(200, 'message', 'Deleted successfully');
     }
 
+    /**
+     * A non-standard resource route, mapped in the routes file to display all records under the requested domain.
+     * @param type $id
+     * @return type
+     */
     public function domainRecords($id)
     {
         try {
 
             $domain = Domain::with('records')->findOrFail($id);
+            
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         }

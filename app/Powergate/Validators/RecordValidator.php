@@ -7,23 +7,6 @@ use Powergate\Validators\Validator;
 class RecordValidator extends Validator
 {
 
-    protected $types = [
-        'A',
-        'AAAA',
-        'CNAME',
-        'HINFO',
-        'MX',
-        'NAPTR',
-        'NS',
-        'PTR',
-        'SOA',
-        'SPF',
-        'SRV',
-        'SSHFP',
-        'TXT',
-        'RP'
-    ];
-
     public function __construct(array $input, $isNew = true)
     {
         parent::__construct($input, $isNew);
