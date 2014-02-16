@@ -23,6 +23,11 @@ class Record extends \Eloquent
     protected $hidden = [];
     
     protected $fillable = [];
+    
+    public function domain()
+    {
+        return $this->belongsTo('domain');
+    }
 
     public function saveNew()
     {

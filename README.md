@@ -92,6 +92,66 @@ The expected response is as follows:
 }
 ```
 
+#### Returning a single domain and all associated records
+
+To retrieve the domain and all of the related records for that domain, a simple **GET** request can be made as follows:
+
+```
+GET https://api.yourdnsserver.com/domains/1/records
+```
+
+By specifying the domain ID and then requesting `records` as the end of the URI the API will now respond with the details of the domain as well as a listing of all records for that domain like so:
+
+```json
+{
+    "errors": false,
+    "domain": {
+        "id": 1,
+        "name": "example.com",
+        "master": null,
+        "last_check": null,
+        "type": "NATIVE",
+        "notified_serial": null,
+        "account": null,
+        "records": [
+            {
+                "id": 1,
+                "domain_id": 1,
+                "name": "example.com",
+                "type": "SOA",
+                "content": "localhost ahu@ds9a.nl 1",
+                "ttl": 86400,
+                "prio": null,
+                "change_date": null
+            },
+            {
+                "id": 2,
+                "domain_id": 1,
+                "name": "example.com",
+                "type": "NS",
+                "content": "dns-us1.powerdns.net",
+                "ttl": 86400,
+                "prio": null,
+                "change_date": null
+            },
+            ...
+            {
+                "id": 14,
+                "domain_id": 1,
+                "name": "server2.example.com",
+                "type": "A",
+                "content": "126.22.98.99",
+                "ttl": 3600,
+                "prio": null,
+                "change_date": 1392546342
+            }
+        ]
+    }
+}
+```
+
+If you wish to return all records regardless of their association with a particular domain, please see the section named *Listing all records* further on.
+
 #### Creating a new domain
 
 To create a new domain, we must make a **POST** request specify some paramters, the parameters that we need to specify are as follows:
@@ -228,6 +288,8 @@ An example of the response is as follows:
 }
 ```
 
+If you wish to only return a list of records for a particular domain only please see the section named *Returning a single domain and all associated records* as mentioned earlier.
+
 #### Returning a single record
 
 Returning a record is the same as requesting the full list of record, except you are required to specify the record ID in the request URI, so if we wanted to return a single record (*In this case record with an ID of 1*) we'd request it like so:
@@ -293,6 +355,8 @@ Upon successful creation, the API will respond back with a **201** HTTP response
 }
 ```
 
+	Please note: In order for the Slave DNS servers to update (as per the 'Superslave' configuration mentioned in the '[Installation notes](INSTALL.md)'), you are required to increment the SOA serial for the domain, this is something that I feel should be done by the API client as you may wish to bulk change/create records and only then increment the SOA serial to reduce serial incementations and reduce API calls. Therefore the API server will not do this automatically!
+
 #### Updating an existing record
 
 Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*server2.example.com*' record and change it using an IP address for the A record from '126.22.98.2' to '126.22.98.99':
@@ -335,10 +399,6 @@ Upon successful deletion of the domain, the following **200** response will be r
 }
 ```
 
-
-### Supermasters
-
-TBC
 
 ### Standard API Error responses
 

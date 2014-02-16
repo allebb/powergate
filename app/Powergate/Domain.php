@@ -29,6 +29,11 @@ class Domain extends \Eloquent
         'type',
         'account',
     ];
+    
+    public function records()
+    {
+        return $this->hasMany('Powergate\\Record');
+    }
 
     public function saveNew()
     {
