@@ -271,8 +271,8 @@ mysql> select * from records;
 |  1 |         1 | example.com     | SOA  | ns1.example.com. hostmaster.example.com. 2 10800 3600 604800 3600 | 86400 |    0 |        NULL |
 |  2 |         1 | example.com     | NS   | ns1.example.com                                                   | 86400 |    0 |        NULL |
 |  3 |         1 | example.com     | NS   | ns2.example.com                                                   | 86400 |    0 |        NULL |
-|  4 |         1 | ns1.example.com | A    | 10.0.0.1                                                     | 86400 |    0 |        NULL |
-|  5 |         1 | ns2.example.com | A    | 10.0.0.2                                                     | 86400 |    0 |        NULL |
+|  4 |         1 | ns1.example.com | A    | 10.0.0.1                                                          | 86400 |    0 |        NULL |
+|  5 |         1 | ns2.example.com | A    | 10.0.0.2                                                          | 86400 |    0 |        NULL |
 +----+-----------+-----------------+------+-------------------------------------------------------------------+-------+------+-------------+
 5 rows in set (0.00 sec)
 
@@ -309,7 +309,8 @@ If you did not recieve a repsonse simular to the above then please move on the t
 		
 The data should be replicated on the slave now and if you check the syslog on the slave servers they should also have the follow data:
 
-	```Feb 16 15:46:18 ns2 pdns[2120]: 1 slave domain needs checking, 0 queued for AXFR
+		```
+		Feb 16 15:46:18 ns2 pdns[2120]: 1 slave domain needs checking, 0 queued for AXFR
 		Feb 16 15:46:18 ns2 pdns[2120]: Received serial number updates for 1 zones, had 0 timeouts
 		Feb 16 15:46:18 ns2 pdns[2120]: Domain example.com is stale, master serial 3, our serial 2
 		Feb 16 15:46:18 ns2 pdns[2120]: Initiating transfer of 'example.com' from remote '172.25.87.201'
