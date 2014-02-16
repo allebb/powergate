@@ -79,7 +79,7 @@ class RecordsController extends \BaseController
     {
         try {
 
-            $record = new Record;
+            $record = Record::find($id);
             $record->domain_id = Input::get('domain_id');
             $record->name = Input::get('name');
             $record->type = strtoupper(Input::get('type'));
