@@ -188,7 +188,7 @@ An example of the response is as follows:
             "domain_id": 1,
             "name": "example.com",
             "type": "SOA",
-            "content": "localhost ahu@ds9a.nl 1",
+            "content": "ns1.example.com ballen@bobbyallen.me 20140216",
             "ttl": 86400,
             "prio": null,
             "change_date": null
@@ -266,7 +266,7 @@ To create a new record, we must make a **POST** request specify some paramters, 
 
 You can additionally set the following parameters too but they are not required by default:
 
-* **prio** - Priory rank of records such as MX records (defaults to null) otherwise.
+* **prio** - Priory rank of records such as MX records, defaults to null otherwise.
 
 Here is an example request to create a new domain:
 
@@ -290,9 +290,10 @@ Upon successful creation, the API will respond back with a **201** HTTP response
         "change_date": 1392545724,
         "id": 12
     }
-}```
+}
+```
 
-#### Updating an existing records
+#### Updating an existing record
 
 Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*server2.example.com*' record and change it using an IP address for the A record from '126.22.98.2' to '126.22.98.99':
 
