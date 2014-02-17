@@ -16,26 +16,26 @@ class RecordValidator extends Validator
      * Rules applied to new records!
      * @var array
      */
-    protected $createRules = array(
+    protected $createRules = [
         'domain_id' => 'required|numeric',
         'name' => 'required',
         'type' => 'record_type|required',
         'content' => 'required',
         'ttl' => 'required|numeric',
         'change_date' => 'numeric',
-    );
+    ];
 
     /**
      * Rules applied to records that are being updated!
      * @var array
      */
-    protected $updateRules = array(
+    protected $updateRules = [
         'domain_id' => 'required|numeric',
         'name' => 'required',
         'type' => 'record_type|required',
         'content' => 'required',
         'ttl' => 'required|numeric',
         'change_date' => 'numeric',
-    );
+    ];
 
 }

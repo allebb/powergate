@@ -16,18 +16,18 @@ class DomainValidator extends Validator
      * Rules applied to new records!
      * @var array
      */
-    protected $createRules = array(
+    protected $createRules = [
         'name' => 'required|unique:domains', // Domain must be unique!
         'type' => 'domain_server_type|required',
-    );
+    ];
 
     /**
      * Rules applied to records that are being updated!
      * @var array
      */
-    protected $updateRules = array(
+    protected $updateRules = [
         'name' => 'required',
         'type' => 'domain_server_type|required',
-    );
+    ];
 
 }
