@@ -3,7 +3,6 @@
 use Powergate\Domain;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Powergate\Validators\ValidationException;
-use Powergate\Validators\DomainValidator;
 
 class DomainsController extends BaseController
 {
@@ -29,10 +28,9 @@ class DomainsController extends BaseController
 
         try {
 
-            $validator = new DomainValidator(Input::all());
-            $validator->checkValidation();
             $domain = new Domain;
-            $domain->saveNew();
+            $domain->serviceNew(Input::all());
+
         } catch (ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (Exception $ex) {
@@ -54,6 +52,7 @@ class DomainsController extends BaseController
         try {
 
             $domain = Domain::findOrFail($id);
+            
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         }
@@ -72,16 +71,16 @@ class DomainsController extends BaseController
 
         try {
 
-            $validator = new DomainValidator(Input::all(), false);
-            $validator->checkValidation();
             $domain = Domain::findOrFail($id);
-            $domain->saveUpdate();
-            
-        } catch (Powergate\Validators\ValidationException $ex) {
+            $domain->serviceUpdate(Input::all());
+
+        } catch (ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
-        } 
+        } catch (Exception $ex) {
+            return $this->apiResponse(500);
+        }
 
         return $this->apiResponse(200, 'domain', $domain->toArray());
     }
@@ -99,7 +98,7 @@ class DomainsController extends BaseController
 
             $domain = Domain::findOrFail($id);
             $domain->delete();
-            
+
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         } catch (Exception $ex) {
@@ -119,7 +118,7 @@ class DomainsController extends BaseController
         try {
 
             $domain = Domain::with('records')->findOrFail($id);
-            
+
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         }

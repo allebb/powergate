@@ -1,7 +1,6 @@
 <?php
 
 use Powergate\Record;
-use Powergate\Validators\RecordValidator;
 use Powergate\Validators\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -35,7 +34,7 @@ class RecordsController extends \BaseController
         } catch (ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (Exception $ex) {
-            return $this->apiResponse(500, 'message', $ex->getMessage());
+            return $this->apiResponse(500);
         }
 
         return $this->apiResponse(201, 'record', $record->toArray());
@@ -78,6 +77,8 @@ class RecordsController extends \BaseController
             return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
+        } catch (Exception $ex) {
+            return $this->apiResponse(500);
         }
 
         return $this->apiResponse(200, 'record', $record->toArray());

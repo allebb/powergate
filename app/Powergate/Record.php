@@ -51,7 +51,7 @@ class Record extends \Eloquent
         $this->prio = (isset($input['prio']) ? (int) $input['prio'] : null);
         $this->change_date = (int) time();
 
-        // If succssful we should be able to save the result"
+        // If succssful we should be able to save the result
         return $this->save();
     }
 
@@ -64,14 +64,14 @@ class Record extends \Eloquent
     {
 
         // Lets validate the input first!
-        $validator = new RecordValidator($input);
+        $validator = new RecordValidator($input, false);
         $validator->checkValidation();
 
         // Assign values
         $this->domain_id = (int) $input['domain_id'];
         $this->name = strtolower($input['name']);
         $this->type = strtoupper($input['type']);
-        $this->content = strtolower($input['type']);
+        $this->content = strtolower($input['content']);
         $this->ttl = (int) $input['ttl'];
         $this->prio = (isset($input['prio']) ? (int) $input['prio'] : $this->prio);
         $this->change_date = (int) time();

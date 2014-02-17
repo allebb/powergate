@@ -3,6 +3,7 @@
 namespace Powergate;
 
 use Input;
+use Powergate\Validators\DomainValidator;
 
 /**
  * An Eloquent Model: 'Powergate\Domain'
@@ -21,36 +22,51 @@ class Domain extends \Eloquent
 {
 
     public $timestamps = false;
-    
     protected $hidden = [];
-    
     protected $fillable = [
         'name',
         'master',
         'type',
         'account',
     ];
-    
+
     public function records()
     {
         return $this->hasMany('Powergate\\Record');
     }
 
-    public function saveNew()
+    public function serviceNew(array $input)
     {
-        $this->name = strtolower(Input::get('name'));
-        $this->master = Input::get('master');
-        $this->type = strtoupper(Input::get('type'));
-        $this->account = strtolower(Input::get('account'));
+        // Lets validate the input first!
+        $validator = new DomainValidator($input);
+        $validator->checkValidation();
+
+        // Assign values
+        $this->name = strtolower($input['name']);
+        $this->master = (isset($input['master']) ? strtolower($input['master']) : null);
+        $this->type = strtoupper($input['type']);
+        $this->account = (isset($input['account']) ? strtolower($input['account']) : null);
+        $this->last_check = null;
+        $this->notified_serial = null;
+
+        // If succssful we should be able to save the result
         $this->save();
     }
 
-    public function saveUpdate()
+    public function serviceUpdate(array $input)
     {
-        $this->name = strtolower(Input::get('name'));
-        $this->master = Input::get('master');
-        $this->type = strtoupper(Input::get('type'));
-        $this->account = strtolower(Input::get('account'));
+
+        // Lets validate the input first!
+        $validator = new DomainValidator($input, false);
+        $validator->checkValidation();
+
+        // Assign values
+        $this->name = strtolower($input['name']);
+        $this->master = (isset($input['master']) ? strtolower($input['master']) : null);
+        $this->type = strtoupper($input['type']);
+        $this->account = (isset($input['account']) ? strtolower($input['account']) : null);
+
+        // If succssful we should be able to save the result
         $this->save();
     }
 
