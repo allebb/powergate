@@ -2,6 +2,8 @@
 
 namespace Powergate;
 
+use Powergate\Validators\RecordValidator;
+
 /**
  * An Eloquent Model: 'Powergate\Record'
  *
@@ -21,9 +23,7 @@ class Record extends \Eloquent
 {
 
     public $timestamps = false;
-
     protected $hidden = [];
-
     protected $fillable = [];
 
     public function domain()
@@ -31,28 +31,53 @@ class Record extends \Eloquent
         return $this->belongsTo('Powergate\\Domain');
     }
 
-    public function saveNew()
+    /**
+     * A 'service' to create and validate a new Recrod, this could be moved to a seperate service
+     * class by the application is lightweight therefore would be overkill if I did!
+     * @param array $input
+     */
+    public function serviceNew(array $input)
     {
-        $this->domain_id = Input::get('domain_id');
-        $this->name = Input::get('name');
-        $this->type = strtoupper(Input::get('type'));
-        $this->content = strtolower(Input::get('content'));
-        $this->ttl = Input::get('ttl');
-        $this->prio = Input::get('prio');
-        $this->change_date = time();
-        $this->save();
+        // Lets validate the input first!
+        $validator = new RecordValidator($input);
+        $validator->checkValidation();
+
+        // Assign values
+        $this->domain_id = (int) $input['domain_id'];
+        $this->name = strtolower($input['name']);
+        $this->type = strtoupper($input['type']);
+        $this->content = strtolower($input['content']);
+        $this->ttl = (int) $input['ttl'];
+        $this->prio = (isset($input['prio']) ? (int) $input['prio'] : null);
+        $this->change_date = (int) time();
+
+        // If succssful we should be able to save the result"
+        return $this->save();
     }
 
-    public function saveUpdate()
+    /**
+     * A 'service' to create and validate a new Recrod, this could be moved to a seperate service
+     * class by the application is lightweight therefore would be overkill if I did!
+     * @param array $input
+     */
+    public function serviceUpdate(array $input)
     {
-        $this->domain_id = Input::get('domain_id');
-        $this->name = Input::get('name');
-        $this->type = strtoupper(Input::get('type'));
-        $this->content = strtolower(Input::get('content'));
-        $this->ttl = Input::get('ttl');
-        $this->prio = Input::get('prio');
-        $this->change_date = time();
-        $this->save();
+
+        // Lets validate the input first!
+        $validator = new RecordValidator($input);
+        $validator->checkValidation();
+
+        // Assign values
+        $this->domain_id = (int) $input['domain_id'];
+        $this->name = strtolower($input['name']);
+        $this->type = strtoupper($input['type']);
+        $this->content = strtolower($input['type']);
+        $this->ttl = (int) $input['ttl'];
+        $this->prio = (isset($input['prio']) ? (int) $input['prio'] : $this->prio);
+        $this->change_date = (int) time();
+
+        // If succssful we should be able to save the result"
+        return $this->save();
     }
 
 }

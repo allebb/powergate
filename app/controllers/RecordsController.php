@@ -30,22 +30,12 @@ class RecordsController extends \BaseController
         try {
 
             $record = new Record;
-            $record->domain_id = Input::get('domain_id');
-            $record->name = Input::get('name');
-            $record->type = strtoupper(Input::get('type'));
-            $record->content = strtolower(Input::get('content'));
-            $record->ttl = Input::get('ttl');
-            $record->prio = Input::get('prio');
-            $record->change_date = time();
+            $record->serviceNew(Input::all());
 
-            $validator = new RecordValidator($record->toArray());
-            $validator->checkValidation();
-
-            $record->save();
         } catch (ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (Exception $ex) {
-            return $this->apiResponse(500);
+            return $this->apiResponse(500, 'message', $ex->getMessage());
         }
 
         return $this->apiResponse(201, 'record', $record->toArray());
@@ -63,6 +53,7 @@ class RecordsController extends \BaseController
         try {
 
             $record = Record::findOrFail($id);
+
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         }
@@ -80,19 +71,9 @@ class RecordsController extends \BaseController
     {
         try {
 
-            $record = Record::find($id);
-            $record->domain_id = Input::get('domain_id');
-            $record->name = Input::get('name');
-            $record->type = strtoupper(Input::get('type'));
-            $record->content = strtolower(Input::get('content'));
-            $record->ttl = Input::get('ttl');
-            $record->prio = Input::get('prio');
-            $record->change_date = time();
+            $record = Record::findOrFail($id);
+            $record->serviceUpdate(Input::all());
 
-            $validator = new RecordValidator($record->toArray(), false);
-            $validator->checkValidation();
-
-            $record->save();
         } catch (ValidationException $ex) {
             return $this->apiResponse(400);
         } catch (ModelNotFoundException $ex) {
