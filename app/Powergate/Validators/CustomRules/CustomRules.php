@@ -55,7 +55,7 @@ class CustomRules extends \Illuminate\Validation\Validator
      */
     public function validateRecordType($attribute, $value, $parameters)
     {
-        if (in_array(strtolower($value), $this->record_types)) {
+        if (in_array(strtoupper($value), $this->record_types)) {
             return true;
         } else {
             return false;
