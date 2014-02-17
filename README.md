@@ -100,7 +100,7 @@ To retrieve the domain and all of the related records for that domain, a simple 
 GET https://api.yourdnsserver.com/domains/1/records
 ```
 
-By specifying the domain ID and then requesting `records` as the end of the URI the API will now respond with the details of the domain as well as a listing of all records for that domain like so:
+By specifying the domain ID and then requesting `records` at the end of the URI the API will now respond with the details of the domain as well as a listing of all records for that domain like so:
 
 ```json
 {
@@ -167,7 +167,7 @@ You can additionally set the following parameters too but they are not required 
 Here is an example request to create a new domain:
 
 ```
-POST https://api.yourdnsserver.com/domains 
+POST https://api.yourdnsserver.com/domains
 PARAMS name=mydomain.com&type=MASTER
 ```
 
@@ -191,7 +191,7 @@ Upon successful creation, the API will respond back with a **201** HTTP response
 Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*mydomain.com*' domain and change it from a 'MASTER' type to 'SLAVE' we could do it like so:
 
 ```
-PATCH https://api.yourdnsserver.com/domains/2 
+PATCH https://api.yourdnsserver.com/domains/2
 PARAMS name=mydomain.com&type=SLAVE
 ```
 
@@ -316,6 +316,45 @@ The expected response is as follows:
 }
 ```
 
+#### Returning a single record with associated domain infomation
+
+To retrieve a single record and the associated domain infomation, a simple **GET** request can be made as follows:
+
+```
+GET https://api.yourdnsserver.com/records/3/domain
+```
+
+By specifying the record ID and then requesting `domain` at the end of the URI the API will now respond with the details of the record as well as the parent domain infomation as demonstrated here:
+
+```json
+    {
+       "errors": false,
+       "record":
+       {
+           "id": 3,
+           "domain_id": 1,
+           "name": "example.com",
+           "type": "NS",
+           "content": "ns2.example.com",
+           "ttl": 86400,
+           "prio": null,
+           "change_date": null,
+           "domain":
+           {
+               "id": 1,
+               "name": "example.com",
+               "master": null,
+               "last_check": null,
+               "type": "MASTER",
+               "notified_serial": 5,
+               "account": null
+           }
+       }
+    }
+
+
+```
+
 #### Creating a new record
 
 To create a new record, we must make a **POST** request specify some paramters, the parameters that we need to specify are as follows:
@@ -333,7 +372,7 @@ You can additionally set the following parameters too but they are not required 
 Here is an example request to create a new domain:
 
 ```
-POST https://api.yourdnsserver.com/records 
+POST https://api.yourdnsserver.com/records
 PARAMS domain_id=1&name=server2.example.com&type=A&content=126.22.98.2&ttl=3600
 ```
 
@@ -362,7 +401,7 @@ Upon successful creation, the API will respond back with a **201** HTTP response
 Using the **PUT** or **PATCH** HTTP methods an existing record can be updated using the API, if we wanted to update our new '*server2.example.com*' record and change it using an IP address for the A record from '126.22.98.2' to '126.22.98.99':
 
 ```
-PATCH https://api.yourdnsserver.com/domains/2 
+PATCH https://api.yourdnsserver.com/domains/2
 PARAMS domain_id=1&name=server2.example.com&type=A&content=126.22.98.99&ttl=3600
 ```
 

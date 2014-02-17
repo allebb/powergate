@@ -14,19 +14,21 @@ namespace Powergate;
  * @property integer $prio
  * @property integer $change_date
  * @property integer $user_id
+ * @property string $content
+ * @property-read \Powergate\\Domain $domain
  */
 class Record extends \Eloquent
 {
 
     public $timestamps = false;
-    
+
     protected $hidden = [];
-    
+
     protected $fillable = [];
-    
+
     public function domain()
     {
-        return $this->belongsTo('domain');
+        return $this->belongsTo('Powergate\\Domain');
     }
 
     public function saveNew()

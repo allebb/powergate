@@ -115,7 +115,7 @@ class RecordsController extends \BaseController
 
             $record = Record::findOrFail($id);
             $record->delete();
-            
+
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         } catch (Exception $ex) {
@@ -123,6 +123,24 @@ class RecordsController extends \BaseController
         }
 
         return $this->apiResponse(200, 'message', 'Deleted successfully');
+    }
+
+    /**
+     * A non-standard resource route, mapped in the routes file to display the parent domain  under the requested record.
+     * @param type $id
+     * @return type
+     */
+    public function recordDomain($id)
+    {
+        try {
+
+            $domain = Record::with('domain')->findOrFail($id);
+
+        } catch (ModelNotFoundException $ex) {
+            return $this->apiResponse(404);
+        }
+
+        return $this->apiResponse(200, 'record', $domain->toArray());
     }
 
 }

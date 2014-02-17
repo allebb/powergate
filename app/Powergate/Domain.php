@@ -15,6 +15,7 @@ use Input;
  * @property integer $notified_serial
  * @property string $account
  * @property integer $user_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Powergate\\Record[] $records
  */
 class Domain extends \Eloquent
 {
