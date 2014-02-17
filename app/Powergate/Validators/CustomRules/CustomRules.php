@@ -10,7 +10,7 @@ class CustomRules extends \Illuminate\Validation\Validator
         'SLAVE',
         'NATIVE',
     ];
-    
+
     protected $record_types = [
         'A',
         'AAAA',
@@ -33,7 +33,7 @@ class CustomRules extends \Illuminate\Validation\Validator
      */
     public function validateDomainServerType($attribute, $value, $parameters)
     {
-        if (in_array($value, $this->domain_server_types)) {
+        if (in_array(strtoupper($value), $this->domain_server_types)) {
             return true;
         } else {
             return false;
@@ -55,7 +55,7 @@ class CustomRules extends \Illuminate\Validation\Validator
      */
     public function validateRecordType($attribute, $value, $parameters)
     {
-        if (in_array($value, $this->record_types)) {
+        if (in_array(strtolower($value), $this->record_types)) {
             return true;
         } else {
             return false;

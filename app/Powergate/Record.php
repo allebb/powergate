@@ -23,8 +23,18 @@ class Record extends \Eloquent
 {
 
     public $timestamps = false;
+
     protected $hidden = [];
-    protected $fillable = [];
+    
+    protected $fillable = [
+        'domain_id',
+        'name',
+        'type',
+        'content',
+        'ttl',
+        'prio',
+        'change_date',
+    ];
 
     public function domain()
     {

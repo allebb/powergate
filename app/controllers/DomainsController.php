@@ -79,7 +79,7 @@ class DomainsController extends BaseController
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         } catch (Exception $ex) {
-            return $this->apiResponse(500);
+            return $this->apiResponse(500, 'ex', $ex->getMessage());
         }
 
         return $this->apiResponse(200, 'domain', $domain->toArray());
