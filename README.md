@@ -460,7 +460,7 @@ If an invalid URI is requested or a client attempts to **POST** to a **GET** onl
 
 ```json
 {
-    "error": "true",
+    "error": true,
     "message": "Invalid request, see https://github.com/bobsta63/powergate/blob/master/README.md for API endpoint URI's"
 }
 ```

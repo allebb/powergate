@@ -11,7 +11,7 @@ Route::group(array('before' => 'PowergateAPIAuth'), function() {
     // Catch-all route to catch invalid API URI's
     Route::any('{path?}', function($path) {
         return Response::json([
-                    'error' => 'true',
+                    'error' => true,
                     'message' => 'Invalid request, see https://github.com/bobsta63/powergate/blob/master/README.md for API endpoint URI\'s'], 404);
     })->where('path', '.+');
 
