@@ -2,7 +2,6 @@
 
 namespace Powergate;
 
-use Input;
 use Powergate\Validators\DomainValidator;
 
 /**

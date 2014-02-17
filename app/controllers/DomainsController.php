@@ -1,8 +1,8 @@
 <?php
 
 use Powergate\Domain;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Powergate\Validators\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class DomainsController extends BaseController
 {
@@ -52,7 +52,7 @@ class DomainsController extends BaseController
         try {
 
             $domain = Domain::findOrFail($id);
-            
+
         } catch (ModelNotFoundException $ex) {
             return $this->apiResponse(404);
         }
