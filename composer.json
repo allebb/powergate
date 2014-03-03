@@ -1,7 +1,7 @@
 {
     "name": "laravel/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": ["powerdns", "pdns", "pdns-server", "powerdns-server", "api"],
     "license": "MIT",
     "require": {
         "laravel/framework": "4.1.*",
