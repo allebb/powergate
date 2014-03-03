@@ -73,6 +73,9 @@ CREATE INDEX rec_name_index ON records(name);
 CREATE INDEX nametype_index ON records(name,type);
 CREATE INDEX domain_id ON records(domain_id);
 CREATE UNIQUE INDEX name_index ON domains(name);
+
+ALTER TABLE `records` ADD FOREIGN KEY (`domain_id`) REFERENCES `domains` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+
 ```
 
 Perfect! - We are now done with the MySQL server side of things, lets move on to PowerDNS configuration...
