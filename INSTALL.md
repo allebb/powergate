@@ -169,6 +169,7 @@ sudo apt-get install php5-fpm php5-curl php5-json php5-sqlite php5-mcrypt php5-c
 
 apt-get install git
 
+mkdir /var/www
 cd /var/www
 git clone https://github.com/bobsta63/powergate.git
 chown -R www-data /var/www/powergate
@@ -198,7 +199,7 @@ composer --version
 Thats great! Now lets change into our 'powergate' directory and lets install the project depencies using composer like so:
 
 ```shell
-cd /var/ww/powergate
+cd /var/www/powergate
 composer install
 ```
 
