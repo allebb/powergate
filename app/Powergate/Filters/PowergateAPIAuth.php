@@ -17,7 +17,11 @@ class PowergateAPIAuth
     private function checkAuthCredentials()
     {
         if (Request::getUser() == Config::get('powergate.auth.user') and Request::getPassword() == Config::get('powergate.auth.key')) {
-            // Its all good in the hood!
+            if (Config::get('powergate.client.restricted', false)) {
+                if (!in_array(Request::server('REMOTE_ADDR'), Config::get('powergate.clients.allowed_client_ips', ['127.0.0.1']))) {
+                    return $this->respondUnathorisedRequest();
+                }
+            }
         } else {
             return $this->respondUnathorisedRequest();
         }
