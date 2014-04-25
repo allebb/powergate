@@ -407,6 +407,7 @@ If you did not recieve a repsonse simular to the above then please move on the t
 * Useful log infomation can be found in `/var/log/syslog` and is recommended that when you experience issues that this is the first place you check on both the MASTER DNS and SLAVE servers.
 * If the slave server is NOT recieving updates, try executing `pdns_control notify-host example.com 10.0.0.2` to force a notificatio for the required domain to the slave. (replacing the IP address of the slave that is not getting the update(s))
 * If you've recently added a new slave DNS server but it is not getting updates ensure that you have added the IP address to the master server's `allow-axfr-ips` configuration line, multiple IP addresses should be seperated with a comma.
+* If you recieve an error like this in the syslog: 'Communicator thread died because of error: GSQLBackend unable to retrieve list of slave domains: Failed to execute mysql_query, perhaps connection died? Err=1: No database selected' go and remove this reduentent file using ``rm /etc/powerdns/pdns.d/pdns.local.gmysql`` and then restart the 'pdns' daemon.
 * If you wish to emulate an automatic update, you can increment the SOA of a domain like so to trigger an update `UPDATE records SET content = 'ns1.example.com hostmaster.example.org 3' WHERE type = 'SOA' AND name = 'example.com';` (In this example I've incremented the SOA serial from '2' to '3'). After such an update is executed on the master, you should see an entry in the syslog (on the master server) like so:
 
 
